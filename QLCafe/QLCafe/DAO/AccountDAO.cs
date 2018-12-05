@@ -21,7 +21,7 @@ namespace QLCafe.DAO
 
             private set
             {
-                instance = value;
+                AccountDAO.instance = value;
             }
         }
         private AccountDAO() { }

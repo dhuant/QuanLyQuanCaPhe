@@ -8,28 +8,20 @@ using System.Threading.Tasks;
 
 namespace QLCafe.DAO
 {
-    class TableDAO
+    public class TableDAO
     {
         private static TableDAO instance;
+
         public static TableDAO Instance
         {
-            get
-            {
-                if (instance == null) instance = new TableDAO();
-                return instance;
-            }
-            private set
-            {
-                instance = value;
-            }
+            get { if (instance == null) instance = new TableDAO(); return TableDAO.instance; }
+            private set { TableDAO.instance = value; }
         }
-
-
-        private TableDAO() { }
 
         public static int TableWidth = 90;
         public static int TableHeight = 90;
 
+        private TableDAO() { }
 
         public List<Table> LoadTableList()
         {
