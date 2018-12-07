@@ -49,7 +49,7 @@ namespace QLCafe
         {
             txbUserName.DataBindings.Add(new Binding("Text", dtgvAccount.DataSource, "UserName", true, DataSourceUpdateMode.Never));
             txbDisplayName.DataBindings.Add(new Binding("Text", dtgvAccount.DataSource, "DisplayName", true, DataSourceUpdateMode.Never));
-            txbAccountType.DataBindings.Add(new Binding("Text", dtgvAccount.DataSource, "Type", true, DataSourceUpdateMode.Never));
+            numericUpDown1.DataBindings.Add(new Binding("Text", dtgvAccount.DataSource, "Type", true, DataSourceUpdateMode.Never));
         }
         void LoadAccount()
         {
@@ -73,6 +73,44 @@ namespace QLCafe
         void LoadListBillByDate(DateTime checkIn, DateTime checkOut)
         {
             dtgvBill.DataSource = BillDAO.Instance.GetBillListByDate(checkIn, checkOut);
+        }
+        void AddAccount(string userName, string displayName, int type)
+        {
+            if (AccountDAO.Instance.InsertAccount(userName, displayName, type))
+            {
+                MessageBox.Show("Thêm tài khoản thành công");
+            }
+            else
+            {
+                MessageBox.Show("Thêm tài khoản thất bại");
+            }
+
+            LoadAccount();
+        }
+        void EditAccount(string userName, string displayName, int type)
+        {
+            if (AccountDAO.Instance.UpdateAccount(userName, displayName, type))
+            {
+                MessageBox.Show("Cập nhật tài khoản thành công");
+            }
+            else
+            {
+                MessageBox.Show("Cập nhật tài khoản thất bại");
+            }
+
+            LoadAccount();
+        }
+
+        void ResetPass(string userName)
+        {
+            if (AccountDAO.Instance.ResetPassword(userName))
+            {
+                MessageBox.Show("Đặt lại mật khẩu thành công");
+            }
+            else
+            {
+                MessageBox.Show("Đặt lại mật khẩu thất bại");
+            }
         }
         #endregion
 
@@ -183,5 +221,31 @@ namespace QLCafe
         {
             LoadAccount();
         }
+
+        private void btnAddAccount_Click(object sender, EventArgs e)
+        {
+            string userName = txbUserName.Text;
+            string displayName = txbDisplayName.Text;
+            int type = (int)numericUpDown1.Value;
+
+            AddAccount(userName, displayName, type);
+        }
+
+        private void btnEditAccount_Click(object sender, EventArgs e)
+        {
+            string userName = txbUserName.Text;
+            string displayName = txbDisplayName.Text;
+            int type = (int)numericUpDown1.Value;
+
+            EditAccount(userName, displayName, type);
+        }
+
+        private void btnResetPassword_Click(object sender, EventArgs e)
+        {
+            string userName = txbUserName.Text;
+
+            ResetPass(userName);
+        }
+
     }
 }
