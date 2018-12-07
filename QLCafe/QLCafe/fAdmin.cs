@@ -20,6 +20,11 @@ namespace QLCafe
             InitializeComponent();
             LoadDateTimePickerBill();
             LoadListBillByDate(dtpkFromDate.Value, dtpkToDate.Value);
+            LoadListFood();
+        }
+        void LoadListFood()
+        {
+            dtgvFood.DataSource = FoodDAO.Instance.GetListFood();
         }
 
         #region methods
@@ -41,5 +46,10 @@ namespace QLCafe
             LoadListBillByDate(dtpkFromDate.Value, dtpkToDate.Value);
         }
         #endregion
+
+        private void btnShowFood_Click(object sender, EventArgs e)
+        {
+            LoadListFood();
+        }
     }
 }
