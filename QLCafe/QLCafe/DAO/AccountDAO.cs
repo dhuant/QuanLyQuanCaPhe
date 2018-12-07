@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QLCafe.DTO;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -34,6 +35,23 @@ namespace QLCafe.DAO
 
             return result.Rows.Count > 0;
             
+        }
+        public bool UpdateAccount(string userName, string displayName, string pass, string newPass)
+        {
+            int result = DataProvider.Instance.ExecuteNonQuery("exec USP_UpdateAccount @userName , @displayName , @password , @newPassword", new object[] { userName, displayName, pass, newPass });
+
+            return result > 0;
+        }
+        public Account GetAccountByUserName(string userName)
+        {
+            DataTable data = DataProvider.Instance.ExecuteQuery("Select * from account where userName = '" + userName + "'");
+
+            foreach (DataRow item in data.Rows)
+            {
+                return new Account(item);
+            }
+
+            return null;
         }
     }
 }
