@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,6 +30,7 @@ namespace QLCafe.DAO
 
         public bool Login(string userName, string passWord)
         {
+           
             string query = "USP_Login @userName , @passWord";
 
             DataTable result = DataProvider.Instance.ExecuteQuery(query, new object[] { userName, passWord });
