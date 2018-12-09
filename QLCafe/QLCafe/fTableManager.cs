@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static QLCafe.fAccountProfile;
+
 
 namespace QLCafe
 {
@@ -127,7 +127,9 @@ namespace QLCafe
             f.ShowDialog();
         }
 
-        private void f_UpdateAccount(object sender, AccountEvent e)
+
+
+        private void f_UpdateAccount(object sender, fAccountProfile.AccountEvent e)
         {
             thôngTinTàiKhoảnToolStripMenuItem.Text = "Thông tin tài khoản (" + e.Acc.DisplayName + ")";
         }
