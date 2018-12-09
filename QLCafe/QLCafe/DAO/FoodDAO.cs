@@ -85,5 +85,15 @@ namespace QLCafe.DAO
             return list;
         }
 
+        public bool DeleteFood(int idFood)
+        {
+            BillInfoDAO.Instance.DeleteBillInfoByID(idFood);
+            string query = string.Format("Delete dbo.Food where id = {0}", idFood);
+
+            int result = DataProvider.Instance.ExecuteNonQuery(query);
+
+            return result > 0;
+        }
+
     }
 }

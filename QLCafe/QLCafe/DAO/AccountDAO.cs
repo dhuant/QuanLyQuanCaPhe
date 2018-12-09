@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace QLCafe.DAO
 {
@@ -60,6 +61,7 @@ namespace QLCafe.DAO
 
         public bool InsertAccount(string name, string displayName, int type)
         {
+
             string query = string.Format("INSERT dbo.Account ( UserName, DisplayName, Type )VALUES  ( N'{0}', N'{1}', {2})", name, displayName, type);
             int result = DataProvider.Instance.ExecuteNonQuery(query);
 
@@ -78,7 +80,15 @@ namespace QLCafe.DAO
         {
             string query = string.Format("update account set password = N'0' where UserName = N'{0}'", name);
             int result = DataProvider.Instance.ExecuteNonQuery(query);
+            
+            return result > 0;
+        }
 
+        public bool DeleteAccount(string username)
+        {
+            string query = string.Format("Delete dbo.Account where UserName = N'{0}'", username);
+            int result = DataProvider.Instance.ExecuteNonQuery(query);
+            
             return result > 0;
         }
     }
