@@ -61,11 +61,18 @@ namespace QLCafe.DAO
 
         public bool InsertAccount(string name, string displayName, int type)
         {
+            DataTable data = DataProvider.Instance.ExecuteQuery("Select * from account where userName = '" + name + "'");
 
+            if (data.Rows.Count > 0)
+            {
+                return false;
+            }
             string query = string.Format("INSERT dbo.Account ( UserName, DisplayName, Type )VALUES  ( N'{0}', N'{1}', {2})", name, displayName, type);
+
             int result = DataProvider.Instance.ExecuteNonQuery(query);
 
             return result > 0;
+
         }
 
         public bool UpdateAccount(string name, string displayName, int type)
