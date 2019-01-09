@@ -11,7 +11,7 @@ namespace QLCafe.DAO
     class DataProvider
     {
         private static DataProvider instance;
-        private string connectionSTR = @"Data Source=DELL-5480\SQLEXPRESS;Initial Catalog=QuanLyQuanCafe;Integrated Security=True";
+        private string connectionSTR = @"Data Source=Cris;Initial Catalog=QuanLyQuanCafe;Integrated Security=True";
 
         public static DataProvider Instance
         {

@@ -254,6 +254,11 @@ VALUES  ( 3, -- idBill - int
           
 GO
 
+
+ALTER TABLE dbo.Bill
+ADD discount INT
+
+
 --Bai11
 CREATE PROC USP_InsertBill
 @idTable INT

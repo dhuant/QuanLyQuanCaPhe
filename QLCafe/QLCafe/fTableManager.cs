@@ -8,9 +8,10 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static QLCafe.fAccountProfile;
+
 
 namespace QLCafe
 {
@@ -127,7 +128,9 @@ namespace QLCafe
             f.ShowDialog();
         }
 
-        private void f_UpdateAccount(object sender, AccountEvent e)
+
+
+        private void f_UpdateAccount(object sender, fAccountProfile.AccountEvent e)
         {
             thôngTinTàiKhoảnToolStripMenuItem.Text = "Thông tin tài khoản (" + e.Acc.DisplayName + ")";
         }
@@ -192,13 +195,15 @@ namespace QLCafe
 
         private void btnCheckOut_Click(object sender, EventArgs e)
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("vi-VN");
             Table table = lsvBill.Tag as Table;
             int discount = (int)nmDisCount.Value;
             int idBill = BillDAO.Instance.GetUncheckBillIDByTableID(table.ID);
 
-            double totalPrice = Convert.ToDouble(txbTotalPrice.Text.Split(',')[0]);
+            //double totalPrice = Convert.ToDouble(txbTotalPrice.Text.Split(',')[0]);
+            double totalPrice = double.Parse(txbTotalPrice.Text.Split(',')[0], CultureInfo.DefaultThreadCurrentUICulture);
             double finalTotalPrice = totalPrice - (totalPrice / 100) * discount;
-
+            
             if (idBill != -1)
             {
                 if (MessageBox.Show(string.Format("Bạn có chắc thanh toán hóa đơn cho bàn {0}\nTổng tiền - (Tổng tiền / 100) x Giảm giá\n=> {1} - ({1} / 100) x {2} = {3}", table.Name, totalPrice, discount, finalTotalPrice), "Thông báo", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
