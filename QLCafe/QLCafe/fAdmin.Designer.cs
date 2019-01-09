@@ -28,6 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tpAccount = new System.Windows.Forms.TabPage();
             this.panel23 = new System.Windows.Forms.Panel();
             this.btnResetPassword = new System.Windows.Forms.Button();
@@ -94,6 +100,17 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.dtgvBill = new System.Windows.Forms.DataGridView();
             this.tcAdmin = new System.Windows.Forms.TabControl();
+            this.tpChart = new System.Windows.Forms.TabPage();
+            this.cmbTypeDatePicker = new System.Windows.Forms.ComboBox();
+            this.fromDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.toDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.btnThongkeProduct = new System.Windows.Forms.TabControl();
+            this.tpIncomeChart = new System.Windows.Forms.TabPage();
+            this.chartBill = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.btnThongkeIncome = new System.Windows.Forms.Button();
+            this.tpProducts = new System.Windows.Forms.TabPage();
+            this.chartFood = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.button1 = new System.Windows.Forms.Button();
             this.tpAccount.SuspendLayout();
             this.panel23.SuspendLayout();
             this.panel25.SuspendLayout();
@@ -126,6 +143,12 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvBill)).BeginInit();
             this.tcAdmin.SuspendLayout();
+            this.tpChart.SuspendLayout();
+            this.btnThongkeProduct.SuspendLayout();
+            this.tpIncomeChart.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartBill)).BeginInit();
+            this.tpProducts.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartFood)).BeginInit();
             this.SuspendLayout();
             // 
             // tpAccount
@@ -751,11 +774,139 @@
             this.tcAdmin.Controls.Add(this.tpFood);
             this.tcAdmin.Controls.Add(this.tbFoodCategory);
             this.tcAdmin.Controls.Add(this.tpAccount);
+            this.tcAdmin.Controls.Add(this.tpChart);
             this.tcAdmin.Location = new System.Drawing.Point(12, 12);
             this.tcAdmin.Name = "tcAdmin";
             this.tcAdmin.SelectedIndex = 0;
             this.tcAdmin.Size = new System.Drawing.Size(658, 439);
             this.tcAdmin.TabIndex = 0;
+            // 
+            // tpChart
+            // 
+            this.tpChart.Controls.Add(this.cmbTypeDatePicker);
+            this.tpChart.Controls.Add(this.fromDatePicker);
+            this.tpChart.Controls.Add(this.toDatePicker);
+            this.tpChart.Controls.Add(this.btnThongkeProduct);
+            this.tpChart.Location = new System.Drawing.Point(4, 22);
+            this.tpChart.Name = "tpChart";
+            this.tpChart.Padding = new System.Windows.Forms.Padding(3);
+            this.tpChart.Size = new System.Drawing.Size(650, 413);
+            this.tpChart.TabIndex = 5;
+            this.tpChart.Text = "Biểu đồ";
+            this.tpChart.UseVisualStyleBackColor = true;
+            // 
+            // cmbTypeDatePicker
+            // 
+            this.cmbTypeDatePicker.DisplayMember = "Ngày";
+            this.cmbTypeDatePicker.FormattingEnabled = true;
+            this.cmbTypeDatePicker.Location = new System.Drawing.Point(3, 25);
+            this.cmbTypeDatePicker.Name = "cmbTypeDatePicker";
+            this.cmbTypeDatePicker.Size = new System.Drawing.Size(121, 21);
+            this.cmbTypeDatePicker.TabIndex = 0;
+            this.cmbTypeDatePicker.Text = "Tháng";
+            this.cmbTypeDatePicker.ValueMember = "Tháng";
+            this.cmbTypeDatePicker.SelectedIndexChanged += new System.EventHandler(this.cmbTypeDatePicker_SelectedIndexChanged);
+            // 
+            // fromDatePicker
+            // 
+            this.fromDatePicker.Location = new System.Drawing.Point(171, 25);
+            this.fromDatePicker.Name = "fromDatePicker";
+            this.fromDatePicker.Size = new System.Drawing.Size(200, 20);
+            this.fromDatePicker.TabIndex = 2;
+            // 
+            // toDatePicker
+            // 
+            this.toDatePicker.Location = new System.Drawing.Point(440, 26);
+            this.toDatePicker.Name = "toDatePicker";
+            this.toDatePicker.Size = new System.Drawing.Size(200, 20);
+            this.toDatePicker.TabIndex = 0;
+            // 
+            // btnThongkeProduct
+            // 
+            this.btnThongkeProduct.Controls.Add(this.tpIncomeChart);
+            this.btnThongkeProduct.Controls.Add(this.tpProducts);
+            this.btnThongkeProduct.Location = new System.Drawing.Point(3, 51);
+            this.btnThongkeProduct.Name = "btnThongkeProduct";
+            this.btnThongkeProduct.SelectedIndex = 0;
+            this.btnThongkeProduct.Size = new System.Drawing.Size(641, 362);
+            this.btnThongkeProduct.TabIndex = 1;
+            // 
+            // tpIncomeChart
+            // 
+            this.tpIncomeChart.Controls.Add(this.chartBill);
+            this.tpIncomeChart.Controls.Add(this.btnThongkeIncome);
+            this.tpIncomeChart.Location = new System.Drawing.Point(4, 22);
+            this.tpIncomeChart.Name = "tpIncomeChart";
+            this.tpIncomeChart.Padding = new System.Windows.Forms.Padding(3);
+            this.tpIncomeChart.Size = new System.Drawing.Size(633, 336);
+            this.tpIncomeChart.TabIndex = 0;
+            this.tpIncomeChart.Text = "Doanh thu";
+            this.tpIncomeChart.UseVisualStyleBackColor = true;
+            // 
+            // chartBill
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chartBill.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartBill.Legends.Add(legend1);
+            this.chartBill.Location = new System.Drawing.Point(6, 6);
+            this.chartBill.Name = "chartBill";
+            series1.ChartArea = "ChartArea1";
+            series1.IsValueShownAsLabel = true;
+            series1.Legend = "Legend1";
+            series1.Name = "Bill";
+            this.chartBill.Series.Add(series1);
+            this.chartBill.Size = new System.Drawing.Size(621, 273);
+            this.chartBill.TabIndex = 4;
+            this.chartBill.Text = "chart1";
+            // 
+            // btnThongkeIncome
+            // 
+            this.btnThongkeIncome.Location = new System.Drawing.Point(287, 285);
+            this.btnThongkeIncome.Name = "btnThongkeIncome";
+            this.btnThongkeIncome.Size = new System.Drawing.Size(77, 45);
+            this.btnThongkeIncome.TabIndex = 3;
+            this.btnThongkeIncome.Text = "Thống kê";
+            this.btnThongkeIncome.UseVisualStyleBackColor = true;
+            this.btnThongkeIncome.Click += new System.EventHandler(this.btnThongkeIncome_Click);
+            // 
+            // tpProducts
+            // 
+            this.tpProducts.Controls.Add(this.chartFood);
+            this.tpProducts.Controls.Add(this.button1);
+            this.tpProducts.Location = new System.Drawing.Point(4, 22);
+            this.tpProducts.Name = "tpProducts";
+            this.tpProducts.Padding = new System.Windows.Forms.Padding(3);
+            this.tpProducts.Size = new System.Drawing.Size(633, 336);
+            this.tpProducts.TabIndex = 1;
+            this.tpProducts.Text = "Sản Phẩm";
+            this.tpProducts.UseVisualStyleBackColor = true;
+            // 
+            // chartFood
+            // 
+            chartArea2.Name = "ChartArea1";
+            this.chartFood.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartFood.Legends.Add(legend2);
+            this.chartFood.Location = new System.Drawing.Point(6, 6);
+            this.chartFood.Name = "chartFood";
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Food";
+            this.chartFood.Series.Add(series2);
+            this.chartFood.Size = new System.Drawing.Size(621, 273);
+            this.chartFood.TabIndex = 5;
+            this.chartFood.Text = "chart1";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(287, 285);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(77, 45);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Thống kê";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // fAdmin
             // 
@@ -808,6 +959,12 @@
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvBill)).EndInit();
             this.tcAdmin.ResumeLayout(false);
+            this.tpChart.ResumeLayout(false);
+            this.btnThongkeProduct.ResumeLayout(false);
+            this.tpIncomeChart.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chartBill)).EndInit();
+            this.tpProducts.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chartFood)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -880,6 +1037,17 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView dtgvBill;
         private System.Windows.Forms.TabControl tcAdmin;
+        private System.Windows.Forms.TabPage tpChart;
+        private System.Windows.Forms.DateTimePicker toDatePicker;
+        private System.Windows.Forms.Button btnThongkeIncome;
+        private System.Windows.Forms.ComboBox cmbTypeDatePicker;
+        private System.Windows.Forms.DateTimePicker fromDatePicker;
+        private System.Windows.Forms.TabControl btnThongkeProduct;
+        private System.Windows.Forms.TabPage tpIncomeChart;
+        private System.Windows.Forms.TabPage tpProducts;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartFood;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartBill;
 
     }
 }
