@@ -1,0 +1,6 @@
+﻿Chào thầy Triết.
+
+Đây là file hướng dẫn import database của SQL Server.
+Đây là file bacpac nên thầy import Data-tier Application.
+
+Vd: NewDatabase , chuột phải -> Task -> Import Data-tier Application

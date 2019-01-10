@@ -1,6 +1,7 @@
 ﻿//using QLCafe.DAO;
 using QLCafe.DAO;
 using QLCafe.DTO;
+using QLCafe.Strategy;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,10 +19,13 @@ namespace QLCafe
     {
         BindingSource foodList = new BindingSource();
         BindingSource accountList = new BindingSource();
+        Dictionary<string, string> format4DatePicker = new Dictionary<string, string>();
+        
         public fAdmin()
         {
             InitializeComponent();
             Loading();
+            CustomDesignChartTab();
         }
 
         #region methods
@@ -31,18 +35,52 @@ namespace QLCafe
 
             return listFood;
         }
+
+        private void customFormatDatePicker(string format)
+        {
+            fromDatePicker.CustomFormat = format;
+            toDatePicker.CustomFormat = format;
+        }
+        private void CustomDesignChartTab()
+        {
+            
+            fromDatePicker.Format = DateTimePickerFormat.Custom;
+            toDatePicker.Format = DateTimePickerFormat.Custom;
+            
+            format4DatePicker.Add("Ngày", "dd-MM-yyyy");
+            format4DatePicker.Add("Tháng", "MM-yyyy");
+            format4DatePicker.Add("Năm", "yyyy");
+
+            string[] typeDatepicker = { "Ngày", "Tháng", "Năm" };
+            foreach (var item in typeDatepicker)
+            {
+                cmbTypeDatePicker.Items.Add(item);
+            }
+
+            customFormatDatePicker(format4DatePicker["Tháng"]);
+        }
         void Loading()
         {
             dtgvFood.DataSource = foodList;
             dtgvAccount.DataSource = accountList;
-
+            
             LoadDateTimePickerBill();
             LoadListBillByDate(dtpkFromDate.Value, dtpkToDate.Value);
             LoadListFood();
             LoadAccount();
+            LoadListCategory();
+            
             LoadCategoryIntoCombobox(cbFoodCategory);
             AddFoodBinding();
             AddAccountBinding();
+            AddCategoryBinding();
+        }
+
+        void AddCategoryBinding()
+        {
+            txbCategoryID.DataBindings.Add(new Binding("Text", dtgvCategory.DataSource, "id", true, DataSourceUpdateMode.Never));
+            txtCategoryName.DataBindings.Add(new Binding("Text", dtgvCategory.DataSource, "name", true, DataSourceUpdateMode.Never));
+            
         }
 
         void AddAccountBinding()
@@ -63,6 +101,11 @@ namespace QLCafe
         {
             cb.DataSource = CategoryDAO.Instance.GetListCategory();
             cb.DisplayMember = "Name";
+        }
+
+        void LoadListCategory()
+        {
+            dtgvCategory.DataSource = CategoryDAO.Instance.GetListCategory();
         }
         void LoadDateTimePickerBill()
         {
@@ -217,6 +260,13 @@ namespace QLCafe
             remove { updateFood -= value; }
         }
 
+        private event EventHandler deleteFood;
+        public event EventHandler DeleteFood
+        {
+            add { deleteFood += value; }
+            remove { deleteFood -= value; }
+        }
+
         private void btnShowAccount_Click(object sender, EventArgs e)
         {
             LoadAccount();
@@ -245,6 +295,207 @@ namespace QLCafe
             string userName = txbUserName.Text;
 
             ResetPass(userName);
+        }
+
+        private void btnAddCategory_Click(object sender, EventArgs e)
+        {
+            string nameCategory = txtCategoryName.Text;
+
+            if (CategoryDAO.Instance.InsertFoodCategory(nameCategory))
+            {
+                MessageBox.Show("Thêm category thành công");
+                LoadListFood();
+                if (insertFood != null)
+                    insertFood(this, new EventArgs());
+            }
+            else
+            {
+                MessageBox.Show("Có lỗi khi thêm category");
+            }
+        }
+
+        private void btnEditCategory_Click(object sender, EventArgs e)
+        {
+            string nameCategory = txtCategoryName.Text;
+            string idCategory = txbCategoryID.Text;
+            if (CategoryDAO.Instance.UpdateFoodCategory(nameCategory, idCategory))
+            {
+                MessageBox.Show("Cập nhật category thành công");
+                LoadListCategory();
+            }
+            else
+            {
+                MessageBox.Show("Có lỗi khi cập nhật category");
+            }
+        }
+
+        private void btnDeleteCategory_Click(object sender, EventArgs e)
+        {
+            int idFood = Convert.ToInt32(txbFoodID.Text);
+
+            if (FoodDAO.Instance.DeleteFood(idFood))
+            {
+                MessageBox.Show("Xóa món thành công!");
+                LoadListFood();
+                if (deleteFood != null)
+                    deleteFood(this, new EventArgs());
+            }
+            else
+            {
+                MessageBox.Show("Xóa món không thành công!");
+            }
+        }
+
+        private void btnDeleteAccount_Click(object sender, EventArgs e)
+        {
+            string username = txbUserName.Text;
+
+            if (AccountDAO.Instance.DeleteAccount(username))
+            {
+                MessageBox.Show("Xóa account thành công!");
+                LoadAccount();
+                
+            }
+            else
+            {
+                MessageBox.Show("Xóa account không thành công!");
+            }
+        }
+
+        private void cmbTypeDatePicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cmbTypeDatePicker.Text)
+            {
+                case "Ngày":
+                    customFormatDatePicker(format4DatePicker["Ngày"]);
+                    break;
+                case "Tuần":
+                    break;
+                case "Quý":
+                    break;
+                case "Tháng":
+                    customFormatDatePicker(format4DatePicker["Tháng"]);
+                    break;
+                case "Năm":
+                    customFormatDatePicker(format4DatePicker["Năm"]);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void ConvertToFullDate(ref string fromDate,ref  string toDate, string typeDate)
+        {
+            string[] fromDateSplit = fromDate.Split('-');
+            string[] toDateSplit = toDate.Split('-');
+            switch (typeDate)
+            {
+                case "Ngày":
+                    fromDate = fromDateSplit[2] + "-" + fromDateSplit[1] + "-" + fromDateSplit[0];
+                    toDate = toDateSplit[2] + "-" + toDateSplit[1] + "-" + fromDateSplit[0];
+                    break;
+                case "Tháng":
+                    fromDate = fromDateSplit[1] + "-"+fromDateSplit[0]+ "-01";
+                    toDate = toDateSplit[1] + "-" + toDateSplit[0] + "-01";
+                    break;
+                case "Năm":
+                    fromDate = fromDate + "-01-01" ;
+                    toDate = toDate + "-12-31";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void ThongKeDoanhThuByDate(List<ThongKeBill> thongKeBill)  
+        {
+            int i = 0;
+            ThongkeDoanhThuStrategy thongkeStrategy = new ThongkeDoanhThuStrategy();
+            thongkeStrategy.ThongKe(cmbTypeDatePicker.Text, thongKeBill, chartBill);
+            //switch (cmbTypeDatePicker.Text)
+            //{
+            //    case "Ngày":
+            //        chartBill.Series[0].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Column;
+            //        chartBill.Series[0].IsValueShownAsLabel = true;
+                    
+            //        foreach (var item in thongKeBill)
+            //        {
+                        
+            //            chartBill.Series["Bill"].Points.AddXY(item.DateCheckout.Split(' ')[0], item.TotalPrice);
+            //            i++;
+            //        }
+                    
+            //        break;
+            //    case "Năm":
+            //        chartBill.Series[0].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Column;
+            //        chartBill.Series[0].IsValueShownAsLabel = true;
+
+            //        foreach (var item in thongKeBill)
+            //        {
+            //            var year = item.DateCheckout;
+            //            chartBill.Series["Bill"].Points.AddXY(year, item.TotalPrice);
+            //            i++;
+            //        }
+
+            //        break;
+
+            //    case "Tháng":
+            //        chartBill.Series[0].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            //        chartBill.Series[0].IsValueShownAsLabel = true;
+            
+            //        foreach (var item in thongKeBill)
+            //        {
+            //            var month = item.DateCheckout;
+            //            chartBill.Series["Bill"].Points.AddXY(month, item.TotalPrice);
+            //            i++;
+            //        }
+
+            //        break;
+                
+            //    default:
+            //        break;
+            //}
+        }
+        private void btnThongkeIncome_Click(object sender, EventArgs e)
+        {
+            string fromDate = fromDatePicker.Text;
+            string toDate = toDatePicker.Text;
+            string typeDatePicker = cmbTypeDatePicker.Text;
+            ConvertToFullDate(ref fromDate, ref  toDate, cmbTypeDatePicker.Text);
+            chartBill.Series[0].Points.Clear();
+
+            List<ThongKeBill> thongKeBill = new List<ThongKeBill>();
+            thongKeBill = BillDAO.Instance.ThongKeDoanhThuByDate(fromDate, toDate, typeDatePicker);
+            ThongKeDoanhThuByDate(thongKeBill);
+
+            
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string fromDate = fromDatePicker.Text;
+            string toDate = toDatePicker.Text;
+            ConvertToFullDate(ref fromDate, ref  toDate, cmbTypeDatePicker.Text);
+            chartFood.Series[0].Points.Clear();
+
+            List<ThongKeFood> thongkeFood = new List<ThongKeFood>();
+            thongkeFood = BillDAO.Instance.ThongKeFoodByDate(fromDate, toDate);
+
+
+            chartFood.Series[0].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            chartFood.Series[0].IsValueShownAsLabel = true;
+            chartFood.Series[0].Label = "#PERCENT";
+            chartFood.Series[0].LegendText = "#VALX";
+            int itemSold = thongkeFood.AsEnumerable().Sum(x => x.Count);
+            int i = 0;
+            foreach (var item in thongkeFood)
+            {
+                string name = item.Name + " - " + item.Count.ToString();
+
+                chartFood.Series["Food"].Points.AddXY(name, item.Count);
+                chartFood.Series["Food"].Points[i].LegendText = name;
+                i++;
+            }
         }
 
     }

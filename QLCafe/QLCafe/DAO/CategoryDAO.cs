@@ -52,5 +52,25 @@ namespace QLCafe.DAO
 
             return category;
         }
+
+        public bool InsertFoodCategory(string nameCategory)
+        {
+            string query = string.Format("INSERT dbo.FoodCategory( name )VALUES ( N'{0}')", nameCategory);
+            int result = DataProvider.Instance.ExecuteNonQuery(query);
+
+            return result > 0;
+        }
+
+        public bool UpdateFoodCategory(string nameCategory, string id)
+        {
+            string query = string.Format("Update dbo.FoodCategory Set name = N'{0}'  where id = {1}", nameCategory, id);
+
+            int result = DataProvider.Instance.ExecuteNonQuery(query);
+
+            return result > 0;
+        }
+
+
+      
     }
 }
